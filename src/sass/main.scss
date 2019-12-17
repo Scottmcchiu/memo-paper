@@ -1,0 +1,150 @@
+@import 'normalize';
+@import url('https://fonts.googleapis.com/css?family=Ubuntu&display=swap');
+
+$style-font: 'Ubuntu', sans-serif;
+$gray: #9f9b9b;
+$dark-gray: #787c74;
+$yellow: #f9f58c;
+$dark-yellow: #c5cb61;
+$red: #f20a5d;
+$blue: #4392fb;
+$white: #ffffff;
+$pencil: #3d3e44;
+
+@mixin pseudo($content, $display){
+  content: $content;
+  display: $display;
+}
+
+@mixin tablet-device {
+  @media screen and (min-width: 640px) {
+    height: 900px;
+    margin: 20px auto;
+    border: 1px solid $gray;
+    box-shadow: 5px 5px 15px $dark-gray;
+    &::after {
+      @include pseudo('', 'block');
+      width: 640px;
+      height: 900px;
+      position: absolute;
+      right: -3px;
+      top: 4px;
+      background-color: $dark-yellow;
+      z-index: -1;
+    }
+  }
+}
+
+@mixin tablet-line {
+  @media screen and (min-width: 640px) {
+    height: 848px;
+  }
+}
+
+%clear-fix{
+  @include pseudo('', 'block');
+  clear: both;
+}
+
+%font-icon{
+  float: right;
+  font-size: 30px;
+  margin:10px 20px 0 0;
+  padding: 2px;
+  border-radius: 4px;
+}
+
+%font-status {
+  color: $white;
+  background-color: $dark-gray;
+}
+
+// font
+body {
+  font: {
+    family: $style-font;
+    size: 20px;
+  }
+  color: $pencil;
+}
+
+// outfit
+#container {
+  width: 640px;
+  height: 1600px;
+  margin: 0;
+  border-bottom: 1px solid $gray;
+  background-color: $yellow;
+  position: relative;
+  @include tablet-device;
+  #head {
+    width: 100%;
+    height: 50px;
+    border-bottom: 2px solid $red;
+    h1 {
+      float:left;
+      margin: 0;
+      padding-left: 5px;
+      &:hover {
+        cursor: default;
+      }
+    }
+    .fa-pencil-alt {
+      @extend %font-icon;
+    }
+    .writing {
+      @extend %font-status;
+    }
+    .fa-eraser {
+      @extend %font-icon;
+    }
+    .cleaning {
+      @extend %font-status;
+    }
+    &::after {
+      @extend %clear-fix;
+    }
+  }
+}
+
+.line {
+  width: 10%;
+  height: 96.75%;
+  position: absolute;
+  border-right: 1px solid $blue;
+  @include tablet-line;
+}
+
+// content
+#contentbox {
+  width: 90%;
+  float: right;
+  ul {
+    margin: 0;
+    padding: 0;
+  }
+  .list {
+    list-style-type: none;
+    width: 571px;
+    height: 41px;
+    padding-left: 5px;
+    border-bottom: 1px solid $red;
+    .notes {
+      border: 0;
+      padding: 0;
+      outline: none;
+      width:100%;
+      height: 100%;
+      background-color: $yellow;
+      &:hover {
+        cursor: default;
+      }
+    }
+  }
+  .last {
+    border-bottom: 0;
+  }
+  &::after {
+    @extend %clear-fix;
+  }
+}
