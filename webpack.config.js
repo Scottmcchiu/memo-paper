@@ -10,9 +10,10 @@ module.exports = {
   entry: './src/js/index.js',
   output: {
     path: path.join(__dirname, 'dist'),
+    publicPath: 'https://kit.fontawesome.com/c3f36ccac8.js',
     filename: './js/bundle.min.js'
   },
-  devtool: 'inline-source-map',
+  devtool: false,
   devServer: {
     contentBase: path.join(__dirname, 'dist'),
     compress: true,
@@ -27,8 +28,9 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: './css/bundle.min.css'
     }),
+    new webpack.SourceMapDevToolPlugin(),
     new HtmlWebpackPlugin({
-      template: './src/index-backup.html',
+      template: './src/views/index.html',
       filename: './index.html',
       minify: {
         collapseBooleanAttributes: true,
@@ -46,26 +48,26 @@ module.exports = {
       },
       inject: false
     }),
-    new BrowserSyncPlugin(
-      {
-        host: 'localhost',
-        port: 3000,
-        proxy: 'http://localhost:3000/'
-      },
-      {
-        reload: false
-      }
-    )
+    new BrowserSyncPlugin({
+      host: 'localhost',
+      port: 3000,
+      proxy: 'http://localhost:3000/'
+    }, {
+      reload: false
+    })
   ],
   module: {
     rules: [{
         test: /\.js$/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: ['@babel/preset-env']
-          }
-        }
+        use: [{
+            loader: 'babel-loader',
+            options: {
+              presets: ['@babel/preset-env']
+            }
+          },
+          'source-map-loader'
+        ],
+        enforce: 'pre'
       },
       {
         test: /\.(sa|sc|c)ss$/,
@@ -79,13 +81,7 @@ module.exports = {
               plugins: function() {
                 return [
                   require('autoprefixer'),
-                  require('cssnano')({
-                    presets: ['default', {
-                      discardComments: {
-                        removeAll: true
-                      }
-                    }]
-                  })
+                  require('cssnano')({presets: ['default', {discardComments: {removeAll: true}}]})
                 ];
               }
             }
