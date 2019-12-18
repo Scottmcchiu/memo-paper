@@ -1,6 +1,6 @@
 ## Memo Paper
 
-* using webpack as build tool
+*using webpack as build tool*
 
 - function
   - similar CRUD frame
